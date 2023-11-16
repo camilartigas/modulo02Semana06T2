@@ -29,35 +29,23 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
-        return new ResponseEntity<>(tasks, HttpStatus.OK);
-    }
+    public ResponseEntity<List<Task>> getTasksByFilters(
+            @RequestParam(value = "status", required = false) Status status,
+            @RequestParam(value = "priority", required = false) Priority priority,
+            @RequestParam(value = "assignee", required = false) String assignee) {
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<?> getTasksByStatus(@PathVariable("status") String statusStr) {
-        try {
-            Status status = Status.valueOf(statusStr.toUpperCase()); // Convertendo a string para o enum Status
+        if (status != null) {
             List<Task> tasksByStatus = taskService.getTasksByStatus(status);
             return new ResponseEntity<>(tasksByStatus, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            // Se a string não corresponder a nenhum valor do enum Status, você pode retornar uma resposta adequada
-            return new ResponseEntity<>("Status inválido", HttpStatus.BAD_REQUEST);
+        } else if (priority != null) {
+            List<Task> tasksByPriority = taskService.getTasksByPriority(priority);
+            return new ResponseEntity<>(tasksByPriority, HttpStatus.OK);
+        } else if (assignee != null) {
+            List<Task> tasksByAssignee = taskService.getTasksByAssignee(assignee);
+            return new ResponseEntity<>(tasksByAssignee, HttpStatus.OK);
+        } else {
+            List<Task> allTasks = taskService.getAllTasks();
+            return new ResponseEntity<>(allTasks, HttpStatus.OK);
         }
     }
-
-
-    @GetMapping("/priority/{priority}")
-    public ResponseEntity<List<Task>> getTasksByPriority(@PathVariable("priority") Priority priority) {
-        List<Task> tasksByPriority = taskService.getTasksByPriority(priority);
-        return new ResponseEntity<>(tasksByPriority, HttpStatus.OK);
-    }
-
-    @GetMapping("/assignee/{assignee}")
-    public ResponseEntity<List<Task>> getTasksByAssignee(@PathVariable("assignee") String assignee) {
-        List<Task> tasksByAssignee = taskService.getTasksByAssignee(assignee);
-        return new ResponseEntity<>(tasksByAssignee, HttpStatus.OK);
-    }
-
-
 }
