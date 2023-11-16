@@ -56,5 +56,26 @@ public class TaskService {
         }
         return tasksByAssignee;
     }
+
+    public Task getTaskById(Long taskId) {
+        for (Task task : taskList) {
+            if (task.getId().equals(taskId)) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public Task updateTask(Task updatedTask) {
+        for (int i = 0; i < taskList.size(); i++) {
+            Task task = taskList.get(i);
+            if (task.getId().equals(updatedTask.getId())) {
+                taskList.set(i, updatedTask);
+                return updatedTask;
+            }
+        }
+        return null;
+    }
+
 }
 

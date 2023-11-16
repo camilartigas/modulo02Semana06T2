@@ -1,6 +1,5 @@
 package com.camila.projetoSem06.controller;
 
-
 import com.camila.projetoSem06.model.Priority;
 import com.camila.projetoSem06.model.Status;
 import com.camila.projetoSem06.model.Task;
@@ -48,4 +47,26 @@ public class TaskController {
             return new ResponseEntity<>(allTasks, HttpStatus.OK);
         }
     }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<Task> updateTask(
+            @PathVariable Long taskId,
+            @RequestBody Task updatedTask) {
+        Task existingTask = taskService.getTaskById(taskId);
+
+        if (existingTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Atualiza os campos da tarefa existente com os novos valores recebidos
+        existingTask.setDescription(updatedTask.getDescription());
+        existingTask.setStatus(updatedTask.getStatus());
+        existingTask.setPriority(updatedTask.getPriority());
+        existingTask.setAssignee(updatedTask.getAssignee());
+
+        Task updated = taskService.updateTask(existingTask);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
+
 }
