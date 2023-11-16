@@ -77,5 +77,15 @@ public class TaskService {
         return null;
     }
 
+    public boolean deleteTaskById(Long taskId) {
+        for (Task task : taskList) {
+            if (task.getId().equals(taskId)) {
+                taskList.remove(task);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
