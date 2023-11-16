@@ -1,9 +1,8 @@
 package com.camila.projetoSem06.repository;
 
-import com.camila.projetoSemana06.projetoSemana06.model.Priority;
-import com.camila.projetoSemana06.projetoSemana06.model.Status;
-import com.camila.projetoSemana06.projetoSemana06.model.Task;
-
+import com.camila.projetoSem06.model.Priority;
+import com.camila.projetoSem06.model.Status;
+import com.camila.projetoSem06.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

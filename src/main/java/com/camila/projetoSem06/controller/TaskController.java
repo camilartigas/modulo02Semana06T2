@@ -1,8 +1,9 @@
 package com.camila.projetoSem06.controller;
 
-import com.camila.projetoSemana06.projetoSemana06.model.Task;
-import com.camila.projetoSemana06.projetoSemana06.model.Status;
-import com.camila.projetoSemana06.projetoSemana06.model.Priority;
+
+import com.camila.projetoSem06.model.Priority;
+import com.camila.projetoSem06.model.Status;
+import com.camila.projetoSem06.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,17 @@ public class TaskController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable("status") Status status) {
-        List<Task> tasksByStatus = taskService.getTasksByStatus(status);
-        return new ResponseEntity<>(tasksByStatus, HttpStatus.OK);
+    public ResponseEntity<?> getTasksByStatus(@PathVariable("status") String statusStr) {
+        try {
+            Status status = Status.valueOf(statusStr.toUpperCase()); // Convertendo a string para o enum Status
+            List<Task> tasksByStatus = taskService.getTasksByStatus(status);
+            return new ResponseEntity<>(tasksByStatus, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            // Se a string não corresponder a nenhum valor do enum Status, você pode retornar uma resposta adequada
+            return new ResponseEntity<>("Status inválido", HttpStatus.BAD_REQUEST);
+        }
     }
+
 
     @GetMapping("/priority/{priority}")
     public ResponseEntity<List<Task>> getTasksByPriority(@PathVariable("priority") Priority priority) {
@@ -50,4 +58,6 @@ public class TaskController {
         List<Task> tasksByAssignee = taskService.getTasksByAssignee(assignee);
         return new ResponseEntity<>(tasksByAssignee, HttpStatus.OK);
     }
+
+
 }

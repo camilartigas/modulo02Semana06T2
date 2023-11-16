@@ -1,20 +1,20 @@
 package com.camila.projetoSem06.model;
 
-import ch.qos.logback.core.status.Status;
-import jakarta.annotation.Priority;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Task {
 
-    //declaracao de variáveis
-
     private static final AtomicLong taskIdCounter = new AtomicLong();
     private Long id;
     private String description;
-    private Status status; //representa o status de uma tarefa (pendente, em andamento, concluída).
-    private Priority priority; //representa a prioridade de uma tarefa (baixa, média, alta).
-    private String assignee; //nome do responsável pela tarefa.
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING) // Adicionando anotação para mapear o enum Status
+    private Status status;
+
+    private Priority priority;
+    private String assignee;
 
     // Construtor vazio
     public Task() {
@@ -29,8 +29,6 @@ public class Task {
         this.priority = priority;
         this.assignee = assignee;
     }
-
-    // Métodos Getters e Setters para os atributos
 
     public Long getId() {
         return id;
@@ -75,7 +73,4 @@ public class Task {
     private Long generateUniqueTaskId() {
         return taskIdCounter.getAndIncrement();
     }
-
-
 }
-
